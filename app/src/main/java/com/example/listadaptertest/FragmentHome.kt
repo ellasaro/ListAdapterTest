@@ -1,0 +1,43 @@
+package com.example.listadaptertest
+
+import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
+import com.example.listadaptertest.databinding.FragmentHomeBinding
+
+
+class FragmentHome : Fragment() {
+
+    private lateinit var viewModel: HomeViewModel
+
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding!!
+
+    private val adapter = SimpleItemAdapter { item ->
+        viewModel.onItemClick(item.itemId)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+
+        binding.homeRecyclerview.adapter = adapter
+
+        viewModel.items.observe(viewLifecycleOwner) {
+            adapter.submitList(it.toMutableList())
+        }
+    }
+}
