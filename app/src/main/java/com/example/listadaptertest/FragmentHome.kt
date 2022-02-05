@@ -37,7 +37,15 @@ class FragmentHome : Fragment() {
         binding.homeRecyclerview.adapter = adapter
 
         viewModel.items.observe(viewLifecycleOwner) {
-            adapter.submitList(it.toMutableList())
+            /**
+             * Originally, one of the most accepted answers out there was to perform
+             * addItemCount(it.toMutableList()) but it didn't quite work. Before
+             * that, DiffUtils was not even being called, yes, but with the toMutableList()
+             * call, DiffUtils was called but during the evaluation you could see that
+             * the newItem and oldItem would always be the same! After making SimpleItem's
+             * itemClickCount immutable, I reverted to the original submitList(it).
+             */
+            adapter.submitList(it)
         }
     }
 }

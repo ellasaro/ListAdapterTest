@@ -17,6 +17,11 @@ class SimpleItemAdapter(private val itemClick: (item: SimpleItem) -> Unit) :
                 return oldItem.itemId == newItem.itemId
             }
 
+            /**
+             * If you would place a breakpoint here, originally, after modifying a item on the list,
+             * your oldItem and newItem would be the same! Even if it was the first time submitting
+             * the new value.
+             */
             override fun areContentsTheSame(oldItem: SimpleItem, newItem: SimpleItem): Boolean {
                 return oldItem == newItem
             }

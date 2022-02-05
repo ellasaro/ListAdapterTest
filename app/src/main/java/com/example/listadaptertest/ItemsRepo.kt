@@ -10,14 +10,32 @@ object ItemsRepo {
         SimpleItem(5)
     )
 
+    /**
+     * Originally this would return the mutable list of items, it was suggested to always
+     * submit an immutable list
+     */
     fun getItems(): List<SimpleItem> {
-        return items
+        return items.toList()
     }
 
+    /**
+     * The original method when SimpleItem's itemClickCount was mutable
+     */
+//    fun addItemCount(itemId: Int) {
+//        items.find { it.itemId == itemId }?.let {
+//            it.itemClickCount += 1
+//        }
+//    }
+
+    /**
+     * How the method changed when SimpleItem's itemClickCount became immutable
+     */
     fun addItemCount(itemId: Int) {
-        items.find { it.itemId == itemId }?.let {
-            it.itemClickCount += 1
+        val index = items.indexOfFirst { it.itemId == itemId }
+        if (index != -1) {
+            val oldItem = items[index]
+            val newItem = oldItem.copy(itemClickCount = oldItem.itemClickCount + 1)
+            items[index] = newItem
         }
     }
-
 }

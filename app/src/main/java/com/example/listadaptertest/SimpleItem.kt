@@ -1,3 +1,3 @@
 package com.example.listadaptertest
 
-data class SimpleItem(val itemId: Int, var itemClickCount: Int = 0)
+data class SimpleItem(val itemId: Int, val itemClickCount: Int = 0)
